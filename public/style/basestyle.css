@@ -1,0 +1,154 @@
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, figure, footer, header, 
+hgroup, menu, nav, section, menu,
+time, mark, audio, video {
+  margin:0;
+  padding:0;
+  border:0;
+  outline:0;
+/*  font-size:100%; */
+  vertical-align:baseline;
+  background:transparent;
+}                  
+
+article, aside, figure, footer, header, 
+hgroup, nav, section { display:block; }
+
+blockquote, q { quotes:none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after { content:''; content:none; }
+
+a { margin:0; padding:0; font-size:100%; vertical-align:baseline; background:transparent; }
+
+ins { background-color:#ff9; color:#000; text-decoration:none; }
+
+mark { background-color:#ff9; color:#000; font-style:italic; font-weight:bold; }
+
+del { text-decoration: line-through; }
+
+abbr[title], dfn[title] { border-bottom:1px dotted #000; cursor:help; }
+
+/* tables still need cellspacing="0" in the markup */
+table { border-collapse:collapse; border-spacing:0; }
+
+hr { display:block; height:1px; border:0; border-top:1px solid #ccc; margin:1em 0; padding:0; }
+
+input, select { vertical-align:middle; }
+/* END RESET CSS */
+
+.left {float:left;}
+.right { float:right;}
+.clear {clear:both;}
+
+body {
+ background-image:url(swatch_gray.jpg);
+ font-family:'Averia Libre', cursive, Tahoma, Arial, Helvetica, sans-serif;
+ font-size:18px;
+}
+body, a {
+ color:#404040;
+}
+h1, h2, nav a, aside a, article time
+{
+  font-family: 'Amatic SC', cursive;
+}
+h1, h2, nav a, article time
+{
+  font-weight:bold;
+}
+h1, nav a, aside h2
+{
+  font-size:40px;
+}
+
+a {text-decoration:none;}
+a:visited { color:#404040;}
+a:hover {text-decoration:underline;}
+
+#main {
+  margin:0 auto;
+  width:1024px;
+  position:relative;
+}
+
+header {
+  background-color:white;
+  margin:15px;
+  margin-top:30px;
+  padding-left:30px;
+  height:210px;
+}
+header h1 {
+ font-family: 'Amatic SC', cursive;
+ font-size:126px;
+}
+header h2 {
+ font-family: 'Homemade Apple', cursive;
+ font-size:25px;
+ margin-top:-20px;
+ padding:2px;
+}
+nav {
+ color:#FFA900;
+ height:43px;
+ margin: 15px;
+}
+
+nav li {
+  display:inline;  
+}
+nav a {
+  padding:0 25px 0 20px;
+}
+nav a[href='/contactme'] {
+  padding-left:170px;
+  background:none;
+}
+
+#login {position:fixed;background-color:#555;color:white;padding:10px;}
+#login label {display:block;padding:5px 0;text-align:right;width:235px;}
+#login input {margin:0 10px;}
+
+#cmdbar {display:none;}
+#cmdbar object {float:left;}
+#cmdbar a {display:inline-block;padding:6px 10px;background-color:#555;color:white;margin:-1px 1px 2px;}
+
+#articles {padding:15px;width:650px;float:left;}
+
+article {background:white;border:1px solid #FCB161;padding:10px;margin-bottom:30px;}
+.borderradius article {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  box-shadow:1px 1px 3px #a0a0a0;
+}
+.no-borderradius article {
+  border-right:2px solid #FCB161;
+  border-bottom:2px solid #FCB161;
+}
+
+article header {height:50px;margin:10px;padding:0;background:url(hr.png) bottom repeat-x}
+article h2, article time {font-size:25px;margin:0;}
+article h2 {float:left;}
+article time {float:right;}
+article .body {padding:10px;}
+article img {float:right;width:250px;padding:5px;}
+
+#notes {float:left; padding:25px 35px 0 35px;}
+#notes h2 {height:50px;}
+
+#notes ul {list-style:none;padding:15px 0 0 15px;font-size:25px;}
+#notes li {margin-top:-10px;}
+
+footer {clear:both;}
+
+#recaptcha_table {background-color:white;width:466px;}

@@ -1,0 +1,17 @@
+coffee --nodejs --debug app.coffee
+node-inspector
+git clone git://github.com/philtoms/beuredesel.git
+git add . -- add all
+git rm --cached *
+git add -A -- add + rm
+git commit -a -m "msg"
+git push
+git push git@github.com:philtoms/beuredesel.git
+git reset head -- to master
+
+vagrant vagrant
+sudo su
+supervisor -w . -e coffee -n exit -q test.js
+
+node ... &
+kill $!
