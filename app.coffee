@@ -1,10 +1,13 @@
 susieflooz = (port, fn) ->
  require('./myZappa') port, 'blog.db', ->
 
+  app = this
+
   @use @express.bodyParser({uploadDir:'./public/uploads'}), @app.router, 'static', 'cookies'
  
   @io.set 'log level', 1
-  app = this
+  @on 'connection': ->
+    console.log 'connect' 
 
   @nav [
       'Articles:index'

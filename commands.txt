@@ -9,6 +9,28 @@ git push
 git push git@github.com:philtoms/beuredesel.git
 git reset head -- to master
 
+From Git:
+Global setup:
+ Set up git
+  git config --global user.name "Your Name"
+  git config --global user.email phil.toms@hotmail.co.uk
+      
+Next steps:
+  mkdir beuredesel
+  cd beuredesel
+  git init
+  touch README
+  git add README
+  git commit -m 'first commit'
+  git remote add origin git@github.com:philtoms/beuredesel.git
+  git push -u origin master
+      
+Existing Git Repo?
+  cd existing_git_repo
+  git remote add origin git@github.com:philtoms/beuredesel.git
+  git push -u origin master
+  
+
 vagrant vagrant
 sudo su
 supervisor -w . -e coffee -n exit -q test.js

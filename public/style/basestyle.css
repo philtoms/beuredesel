@@ -115,7 +115,7 @@ nav a[href='/contactme'] {
 }
 
 #login {position:fixed;background-color:#555;color:white;padding:10px;}
-#login label {display:block;padding:5px 0;text-align:right;width:235px;}
+#login label {display:block;padding:5px 0;text-align:right;width:245px;}
 #login input {margin:0 10px;}
 
 #cmdbar {display:none;}
@@ -124,24 +124,29 @@ nav a[href='/contactme'] {
 
 #articles {padding:15px;width:650px;float:left;}
 
-article {background:white;border:1px solid #FCB161;padding:10px;margin-bottom:30px;}
-.borderradius article {
+article,aside {background:white;border:1px solid #FCB161;padding:10px;margin-bottom:30px;}
+.borderradius article,.borderradius aside {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
   box-shadow:1px 1px 3px #a0a0a0;
 }
-.no-borderradius article {
+.no-borderradius article,.no-borderradius aside {
   border-right:2px solid #FCB161;
   border-bottom:2px solid #FCB161;
 }
 
-article header {height:50px;margin:10px;padding:0;background:url(hr.png) bottom repeat-x}
+article header,aside header {height:50px;margin:10px 0;padding:0;background:url(hr.png) bottom repeat-x}
+
 article h2, article time {font-size:25px;margin:0;}
 article h2 {float:left;}
 article time {float:right;}
 article .body {padding:10px;}
 article img {float:right;width:250px;padding:5px;}
+
+#piclinks {float:left; padding:8px 30px 0 40px;margin:15px 0 0 30px;width:224px;}
+#piclinks h2 {height:50px;}
+#piclinks img {padding:0 10px 10px 0;width:100px;height:100px;}
 
 #notes {float:left; padding:25px 35px 0 35px;}
 #notes h2 {height:50px;}

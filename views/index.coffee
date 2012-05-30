@@ -11,6 +11,6 @@ section id:'articles', ->
     article id:x.key.replace(/\//g,'-'), ->
       x.article
 
-aside id:'notes', ->
-  h2 -> "Things of note"
+aside id:'piclinks', ->
+  header -> h2 -> "Favourites"
   text @data.notes.article if @data.notes

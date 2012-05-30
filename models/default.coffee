@@ -35,7 +35,6 @@ bind = (id) ->
     catch err
       model = defaultModel
 
-    ctx.page=
     model v[id],ctx, -> r v
     
 module.exports.build = (s) ->

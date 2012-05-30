@@ -3,9 +3,6 @@
   rename = require('fs').rename
   gm = require('gm')
 
-  @on 'connection': ->
-    console.log 'connect' 
-
   @viewsync = -> 
     '''
       head.ready(document,function(){
@@ -42,7 +39,7 @@
     dest = root+'/public/images/'+(@body.path ? '')+file.name
     tDest = (root+'/public/images/thumbs/'+file.name).split('.')[0]+'.jpg'
     rename root+'/'+file.path, dest, ->
-      gm(dest).thumb 80,80,tDest, (err) ->
+      gm(dest).thumb 100,100,tDest, (err) ->
         if (err) 
           console.log(err)
         else
