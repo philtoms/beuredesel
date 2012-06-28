@@ -13,49 +13,50 @@ myZappa = (port,db,app) ->
 
  store = require('./lib/nstore').extend(require('./lib/nstore/query')()).new db, ->
   
-  zappa.run port, -> # passes this fn to zappa.run
+  store.get 'app', (err,data) =>
+    if (err) then console.log err.toString()
+    
+    zappa.run port, -> # passes this fn to zappa.run
         
-    @root = __dirname
-    @data = null
-    appData = null
-    viewsync = null
-    defaultModel = (require './models/default').build(store)
-      
-    store.get 'app', (err,data) =>
-      if (err) then console.log err.toString()
-      @data = appData = data
+      @use @express.bodyParser({uploadDir:'./public/uploads'}), @app.router, 'static'
+ 
+      @store = store
+      @appData = appData = data
+      @root = __dirname
+
       @include './lib/viewsync' 
-      viewsync = @viewsync
-  
-    @nav = (routes) ->
-      for t,i in routes
-        routes[i] = 
-          route: toRoute t
-          name:  toName t
-          title: toTitle t
+      @include './lib/comments' 
 
-        r=routes[i]
-        do(r) =>
-          model = defaultModel r.name
-        
-          #use this syntax to get a variable into a key
-          routeHandler = {} 
-          routeHandler[r.route+':id([0-9]+)?'] = ->
+      defaultModel = require('./models/default').build(store, @viewsync, @comments)
+      
+      @nav = (routes) ->
+        for t,i in routes
+          routes[i] = 
+            route: toRoute t
+            name:  toName t
+            title: toTitle t
 
-            view = {}
-            view[r.name] =
-              params: @params
-              name: r.name
-              routes: routes
-              appData: appData
-              viewsync: viewsync
+          r=routes[i]
+          do(r) =>
+            model = defaultModel r.name
+          
+            #use this syntax to get a variable into a key
+            routeHandler = {} 
+            routeHandler[r.route+':id([0-9]+)?'] = ->
 
-            model @render, view
-            
-          @get routeHandler
-           
-    # apply 'zappa' context here
-    app.apply(this)
+              view = {}
+              view[r.name] =
+                params: @params
+                name: r.name
+                routes: routes
+                appData: appData
+
+              model @render, view
+              
+            @get routeHandler
+             
+      # apply 'zappa' context here
+      app.apply(this)
     
 zappa = require('zappa')
 return module.exports = myZappa

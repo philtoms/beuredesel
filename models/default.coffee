@@ -1,45 +1,65 @@
-ctx =
-  sort: ( s1,s2) -> Date.parse(s2.date) - Date.parse(s1.date)
-  filter: (key) -> key.indexOf(page)==0
+store=null
+data=null
+viewsync=null
+comments=null
 
 defaultModel = (view, ctx, render) ->
-
-  page = 'page/'+view.name
   
-  pageSort = ( s1,s2) -> Date.parse(s2.date) - Date.parse(s1.date)
-  pageFilter = (key) -> key.indexOf(page)==0 
-
   defaultHeaderImg = 
     cookery:'peppers'
     gardening:'gardenwall'
-    
-  ctx.store.find pageFilter, (e,d) ->
+
+  ctx.store.find ctx.filter, (e,d) ->
   
-    pageData = new ctx.data d, pageSort
+    pageData = new ctx.data d, ctx.sort
     
-    id=page+'/'+view.params.id
+    id=ctx.page+'/'+view.params.id
     head=(pageData.first (f) -> f.key==id) || {}
     headerImg = head.headerImg ?= defaultHeaderImg[view.name] ?='chutney'
 
+    view.pagescript = viewsync
     view.data = 
       headerImg: headerImg
-      articles: pageData.find (f) -> f.key.indexOf(page+"/topten")<0
-      notes: pageData.first (f) -> f.key==page+"/topten"
+      articles: pageData.find (f) -> f.key.indexOf(ctx.page+"/topten")<0
+      notes: pageData.first (f) -> f.key==ctx.page+"/topten"
 
     render()
 
 bind = (id) ->
-  return (r, v) ->
+  
+  return (render,view) ->
+  
+    view = view[id]
+    
+    # direct to single page?
+    mId=id
+    if view.params.id
+        mId="article"
+    
     try
-      model = require './'+id
+      model = require './'+mId
     catch err
       model = defaultModel
 
-    model v[id],ctx, -> r v
+    ctx =
+      store: store
+      data: data
+      viewsync: viewsync
+      comments: comments
+      sort: ( s1,s2) -> Date.parse(s2.date) - Date.parse(s1.date)
+      filter: (key) -> key.indexOf(ctx.page)==0
+      page: 'page/'+view.name
+
+    model view,ctx, -> 
+      modelView = []
+      modelView[mId] = view
+      render modelView
     
-module.exports.build = (s) ->
+module.exports.build = (s, v, c) ->
   
-  ctx.store = s
-  ctx.data = require('../lib/data')
+  store = s
+  viewsync = v
+  comments = c
+  data = require('../lib/data')
 
   return bind

@@ -1,23 +1,20 @@
-susieflooz = (port, fn) ->
+beurredesel = (port, fn) ->
  require('./myZappa') port, 'blog.db', ->
 
-  app = this
-
-  @use @express.bodyParser({uploadDir:'./public/uploads'}), @app.router, 'static', 'cookies'
- 
+  appdata = @appdata
   @io.set 'log level', 1
   @on 'connection': ->
     console.log 'connect' 
 
   @nav [
-      'Articles:index'
+      'Home:index'
       'Cookery'
       'Gardening'
       'ContactMe'
     ]
 
   @post '/sendform' : ->
-    require('./lib/sendmail').send.call(this, @request,app.data.email)
+    require('./lib/sendmail').send.call(this, @request,appdata.email)
     @redirect '/'
  
   @js '/googlea.js': '''
@@ -34,4 +31,4 @@ susieflooz = (port, fn) ->
   
   if fn then fn()
   
-module.exports = susieflooz
+module.exports = beurredesel

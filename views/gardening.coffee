@@ -12,5 +12,5 @@ section id:'articles', ->
       x.article
 
 aside id:'notes', ->
-  h2 -> "Things of note"
+  header -> h2 -> "Favourites"
   text @data.notes.article if @data.notes

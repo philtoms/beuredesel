@@ -50,7 +50,7 @@ input, select { vertical-align:middle; }
 .clear {clear:both;}
 
 body {
- background-image:url(swatch_gray.jpg);
+ background-image:url(swatch_linen2.jpg);
  font-family:'Averia Libre', cursive, Tahoma, Arial, Helvetica, sans-serif;
  font-size:18px;
 }
@@ -80,22 +80,25 @@ a:hover {text-decoration:underline;}
   position:relative;
 }
 
-header {
+.l-header {
   background-color:white;
   margin:15px;
   margin-top:30px;
   padding-left:30px;
   height:210px;
 }
-header h1 {
+.l-header h1 {
  font-family: 'Amatic SC', cursive;
  font-size:126px;
 }
-header h2 {
- font-family: 'Homemade Apple', cursive;
- font-size:25px;
+.l-header h2 {
  margin-top:-20px;
  padding:2px;
+}
+
+.l-mytitle h2 {
+ font-family: 'Homemade Apple', cursive;
+ font-size:25px;
 }
 nav {
  color:#FFA900;
@@ -139,7 +142,7 @@ article,aside {background:white;border:1px solid #FCB161;padding:10px;margin-bot
 article header,aside header {height:50px;margin:10px 0;padding:0;background:url(hr.png) bottom repeat-x}
 
 article h2, article time {font-size:25px;margin:0;}
-article h2 {float:left;}
+article h2, article h3 {float:left;}
 article time {float:right;}
 article .body {padding:10px;}
 article img {float:right;width:250px;padding:5px;}
@@ -147,6 +150,10 @@ article img {float:right;width:250px;padding:5px;}
 #piclinks {float:left; padding:8px 30px 0 40px;margin:15px 0 0 30px;width:224px;}
 #piclinks h2 {height:50px;}
 #piclinks img {padding:0 10px 10px 0;width:100px;height:100px;}
+
+#commentry {float:left;overflow:hidden;}
+#commentry h3 {height:50px;width:180px;}
+#commentry article {width:300px;}
 
 #notes {float:left; padding:25px 35px 0 35px;}
 #notes h2 {height:50px;}

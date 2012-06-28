@@ -9,7 +9,7 @@ html lang:'en', ->
     title @title if @title
     script src:'/scripts/head.js'
     script "googleId='#{@appData.google}'; issueNo=#{@appData.issueNo};"
-    script @viewsync()
+    script @pagescript()
     if @scripts
       for s in @scripts
         if typeof s is 'object'
@@ -39,11 +39,11 @@ html lang:'en', ->
       style @iehack
       text '<![endif]-->'
 
-  body id:@route, ->
+  body id:@name, ->
     div id:'main', ->
-      header ->
+      header class:'l-header l-mytitle', ->
         h1 "Beurre De Sel"
-        h2 "Passionate tales from my kitchen and beyond"
+        h2 -> "Passionate tales from my kitchen and beyond"
       nav ->
         ul ->
           for r in @routes

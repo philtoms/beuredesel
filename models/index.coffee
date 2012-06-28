@@ -6,9 +6,10 @@ module.exports = (view, ctx, render) ->
     
     pageData = new ctx.data d, ctx.sort
     
+    view.pagescript = ctx.viewsync
     view.data = 
       headerImg: 'chutney'
       articles: pageData.find (f) -> f.key.indexOf("/topten")<0
       notes: pageData.first (f) -> f.key.indexOf("/topten")>0
 
-    render()
+    render(view.name)

@@ -2,7 +2,7 @@
   @onSave = (data, a, d) ->
      d.headerImg = data.headerImg if data.headerImg
 
-  @client '/article.js': ->
+  @client '/articleTemplate.js': ->
     window.articleTemplate = (id) ->
       article = document.createElement("article")
       header = document.createElement("header")
@@ -30,8 +30,13 @@
       clear.className="clear"
       return article
 
-    window.onSave = (id,issueNo) ->
-      $("header h1").text "Issue No "+issueNo
+    window.onSave = (id,issueNo,piclink) ->
+      #$("header h1").text "Issue No "+issueNo
+      if piclink
+        $('#piclinks div').prepend "<a href='"+piclink.link+"'><img src='"+piclink.src+"'/></a>"
+      
+      
+      
       
     window.onUpload = (article,fileName) ->
       img = "<img class='edit' src='/images/gallery/{name}' />".replace(/{name}/g,fileName)

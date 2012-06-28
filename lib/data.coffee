@@ -18,7 +18,7 @@ data = (d,s) ->
 
   # convert this to array, sorted if available
   d = toArray d
-  if s? then d = [].sort.call d, s 
+  if s? && d? then d = [].sort.call d, s 
   [].push.apply this, d
   return this
 

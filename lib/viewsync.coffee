@@ -1,6 +1,6 @@
 @include = ->
-  @include('articleTemplate')
-  rename = require('fs').rename
+  @include('templates/articleTemplate')
+  #rename = require('fs').rename
   gm = require('gm')
 
   @viewsync = -> 
@@ -26,8 +26,9 @@
       });
     '''
 
-  root=@root
-  appData=@data
+  root = @root
+  store = @store
+  appData = @appData
   
   @post '/login' : ->
     b = @request.body
@@ -38,18 +39,18 @@
     send = @send
     dest = root+'/public/images/'+(@body.path ? '')+file.name
     tDest = (root+'/public/images/thumbs/'+file.name).split('.')[0]+'.jpg'
-    rename root+'/'+file.path, dest, ->
+    #rename root+'/'+file.path, dest, ->
+    gm(root+'/'+file.path).thumb 300,0,dest, (err) ->
       gm(dest).thumb 100,100,tDest, (err) ->
         if (err) 
           console.log(err)
         else
           send('Success!')
 
-  store = @model
   onSave = @onSave
   @on sync: ->
     data = @data
-    id = data.id.replace(/-/g,'/')
+    id = data.id
     store.get id, (e,d,k) ->
       if !d || d.article!=data.article
         (d ?={}).article = data.article
@@ -59,6 +60,13 @@
           appData.issueNo = data.issueNo
           store.save "app", appData, ->
             console.log "updated " + id
+            if data.piclink
+              store.get 'page/index/topten', (e,d,k) ->
+                d.piclinks = d.piclinks.filter (x) -> x.link!=data.piclink.link
+                d.piclinks.unshift data.piclink
+                store.save 'page/index/topten',d, ->
+                  console.log "piclinks updated " + data.piclink.title
+
 
   @client '/viewsync.js': ->
     io = this
@@ -82,14 +90,20 @@
           head.js(
              '/scripts/uploadify/jquery.uploadify.min.js'
             ,'/scripts/uploadify/swfobject.js'
-            ,'/article.js'
+            ,'/articleTemplate.js'
             ,edit
           )
            
       return false
       
     edit = =>
-      cmdBar = $("<div id='cmdbar'><input id='file_upload' name='file_upload' type='file'><a href='#new'>New article</a><a href='#save'>Save this article</a><a href='#cancel'>Cancel</a></div>");
+      cmdBar = $("""<div id='cmdbar'>
+      <input id='file_upload' name='file_upload' type='file'>
+      <a href='#new'>New article</a>
+      <a href='#save'>Save this article</a>
+      <a href='#cancel'>Cancel</a>
+      <label>Add to piclinks</label><input type='checkbox' id='piclink'/>
+      </div>""")
       cmdBar.appendTo('body')
 
       @connect()
@@ -165,9 +179,22 @@
         command: (e) ->
           switch e.target.href?.split('#')[1]
             when "save"
+              id = article[0].id.replace(/-/g,'/')
+              piclink=null
+              if $('#piclink').prop("checked")
+                piclink=
+                  link:id.replace(/page\//g,'')
+                  title:article.find("h2").text()
+                  src:'images/thumbs/'+article.find("img")[0].src.split('/').pop()
               contentEdit false
-              io.emit sync: {id:article[0].id,article:article.html(),date:articleDate, issueNo:issueNo} 
-              onSave article[0].id,issueNo
+              io.emit sync:
+                id:id
+                article:article.html()
+                date:articleDate
+                issueNo:issueNo
+                piclink:piclink
+              $('#piclink').prop("checked",false)
+              onSave article[0].id,issueNo,piclink
               
             when "cancel"
               if article.html() == empty
@@ -212,7 +239,7 @@
             cmdBar.hide()
 
     #events
-      $('body').click (e) -> viewsync.toggle e
-      $('#cmdbar').click (e) -> viewsync.command e
+      $('article').click (e) -> viewsync.toggle e
+      $('#cmdbar a').click (e) -> viewsync.command e
       $('body').keypress (e) -> viewsync.move e
       
