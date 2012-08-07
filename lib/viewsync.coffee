@@ -1,14 +1,14 @@
 @include = ->
   @include('templates/articleTemplate')
+  fs = require('fs')
   #rename = require('fs').rename
-  gm = require('gm')
+  #gm = require('gm')
 
   @viewsync = -> 
     '''
       head.ready(document,function(){
         head.js(
-        '/googlea.js'
-        ,'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
+        'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
         ,function(){
           $('#scrapbook').click(function(e){
             if (e.ctrlKey){
@@ -32,27 +32,44 @@
   
   @post '/login' : ->
     b = @request.body
-    @send if appData.users[b.user] == b.pass then 'ok' else ''
+    if appData.users[b.user] == b.pass
+      @session.user = {admin:b.user}
+    @send if @session.user?.admin then 'ok' else ''
       
   @post '/upload' : ->
-    file = @request.files.Filedata
+    jpgName = (@body.path ? '') + @body.name.split('.')[0]+'.jpg'
+    base64Data = @body.img.split(',')[1]
+    tbase64Data = @body.thumb.split(',')[1]
+    dest = root+'/public/images/'+jpgName
+    tDest = root+'/public/images/thumbs/'+jpgName
     send = @send
-    dest = root+'/public/images/'+(@body.path ? '')+file.name
-    tDest = (root+'/public/images/thumbs/'+file.name).split('.')[0]+'.jpg'
-    #rename root+'/'+file.path, dest, ->
-    gm(root+'/'+file.path).thumb 300,0,dest, (err) ->
-      gm(dest).thumb 100,100,tDest, (err) ->
-        if (err) 
-          console.log(err)
-        else
-          send('Success!')
+    decodedImage = new Buffer(base64Data, 'base64')
+    fs.writeFile dest, decodedImage, (err) ->
+      if (err) 
+        console.log(err)
+      else
+        console.log 'decoded ' + jpgName
+        decodedImage = new Buffer(tbase64Data, 'base64')
+        fs.writeFile tDest, decodedImage, ->
+        send(jpgName)
+
+    #file = @request.files.Filedata
+    #dest = root+'/public/images/'+(@body.path ? '')+file.name
+    #tDest = (root+'/public/images/thumbs/'+file.name).split('.')[0]+'.jpg'
+    ##rename root+'/'+file.path, dest, ->
+    #gm(root+'/'+file.path).thumb 300,0,dest, (err) ->
+    #  gm(dest).thumb 100,100,tDest, (err) ->
+    #    if (err) 
+    #      console.log(err)
+    #    else
+    #      send('Success!')
 
   onSave = @onSave
   @on sync: ->
     data = @data
     id = data.id
     store.get id, (e,d,k) ->
-      if !d || d.article!=data.article
+#      if !d || d.article!=data.article
         (d ?={}).article = data.article
         d.date = data.date
         onSave data, appData, d
@@ -88,8 +105,7 @@
         if r=='ok'
           login.hide()
           head.js(
-             '/scripts/uploadify/jquery.uploadify.min.js'
-            ,'/scripts/uploadify/swfobject.js'
+            '/scripts/resample.js'
             ,'/articleTemplate.js'
             ,edit
           )
@@ -105,7 +121,7 @@
       <label>Add to piclinks</label><input type='checkbox' id='piclink'/>
       </div>""")
       cmdBar.appendTo('body')
-
+      
       @connect()
 
       savedRange=false
@@ -137,16 +153,19 @@
 
       viewsync = new class
 
-        $('#file_upload').uploadify
-          'uploader'  : '/scripts/uploadify/uploadify.swf'
-          'script'    : '/upload'
-          'cancelImg' : '/scripts/uploadify/cancel.png'
-          'scriptData': 'path':'gallery/'
-          'auto'      : true
-          'onComplete':(event, ID, fileObj, response, data) ->
+        fileUploader 600,0,$("#file_upload")[0],(img,thumb,name) =>
+          xhr = new XMLHttpRequest()
+          fd = new FormData()
+          fd.append( 'img', img )
+          fd.append( 'thumb', thumb )
+          fd.append( 'name', name )
+          fd.append('path','gallery/')
+          xhr.open( 'POST', '/upload', true )
+          xhr.onload =  -> 
             contentEdit true
-            onUpload(article,fileObj.name)
-      
+            onUpload(article,name)
+          xhr.send( fd )
+             
         left=37
         up=38
         right=39
@@ -180,21 +199,23 @@
           switch e.target.href?.split('#')[1]
             when "save"
               id = article[0].id.replace(/-/g,'/')
+              aIssueNo = parseInt(id.split('/').pop(),10)
+              if aIssueNo>issueNo then issueNo=aIssueNo
               piclink=null
               if $('#piclink').prop("checked")
                 piclink=
                   link:id.replace(/page\//g,'')
                   title:article.find("h2").text()
-                  src:'images/thumbs/'+article.find("img")[0].src.split('/').pop()
+                  src:'images/thumbs/gallery/'+article.find("img")[0].src.split('/').pop()
               contentEdit false
               io.emit sync:
                 id:id
                 article:article.html()
                 date:articleDate
-                issueNo:issueNo
+                issueNo:aIssueNo
                 piclink:piclink
               $('#piclink').prop("checked",false)
-              onSave article[0].id,issueNo,piclink
+              window.onSave article[0].id,aIssueNo,piclink
               
             when "cancel"
               if article.html() == empty
@@ -205,7 +226,7 @@
 
             when "new"
               contentEdit false
-              id = 'page-'+root+'-' + (++issueNo)
+              id = 'page-'+root+'-' + issueNo
               section.prepend articleTemplate id
               article = $("#"+id)
               article.before cmdBar.show()

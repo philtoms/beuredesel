@@ -34,11 +34,7 @@
       #$("header h1").text "Issue No "+issueNo
       if piclink
         $('#piclinks div').prepend "<a href='"+piclink.link+"'><img src='"+piclink.src+"'/></a>"
-      
-      
-      
-      
+
     window.onUpload = (article,fileName) ->
       img = "<img class='edit' src='/images/gallery/{name}' />".replace(/{name}/g,fileName)
       $(".body",article).prepend(img)
-

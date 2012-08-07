@@ -1,9 +1,9 @@
 {
-  "name": "susieflooz",
-  "description": "Static Website",
+  "name": "beuredesel",
+  "description": "Scrapbook Website",
   "version": "0.0.1",
   "author": "Phil Toms <phil.toms@hotmail.co.uk>",
-  "repository": {"type": "git", "url": "git://github.com/philtoms/susieflooz.git"},
+  "repository": {"type": "git", "url": "git://github.com/philtoms/beurredesel.git"},
   "dependencies": {
     "coffee-script": "1.2.0",
     "zappa": "> 0.3.0",

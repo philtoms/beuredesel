@@ -50,7 +50,9 @@ input, select { vertical-align:middle; }
 .clear {clear:both;}
 
 body {
- background-image:url(swatch_linen2.jpg);
+ background-image:url(beige_linen.jpg);
+ background-image:url(lilac_linen.jpg);
+ background-image:url(green_linen.jpg);
  font-family:'Averia Libre', cursive, Tahoma, Arial, Helvetica, sans-serif;
  font-size:18px;
 }
@@ -63,7 +65,7 @@ h1, h2, nav a, aside a, article time
 }
 h1, h2, nav a, article time
 {
-  font-weight:bold;
+  font-weight:400;
 }
 h1, nav a, aside h2
 {
@@ -81,7 +83,7 @@ a:hover {text-decoration:underline;}
 }
 
 .l-header {
-  background-color:white;
+  background:white url(saltpot.jpg) no-repeat 820px 10px;
   margin:15px;
   margin-top:30px;
   padding-left:30px;
@@ -118,7 +120,7 @@ nav a[href='/contactme'] {
 }
 
 #login {position:fixed;background-color:#555;color:white;padding:10px;}
-#login label {display:block;padding:5px 0;text-align:right;width:245px;}
+#login label {display:block;padding:5px 0;text-align:right;width:260px;}
 #login input {margin:0 10px;}
 
 #cmdbar {display:none;}

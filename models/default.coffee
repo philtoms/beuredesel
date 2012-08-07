@@ -4,6 +4,8 @@ viewsync=null
 comments=null
 
 defaultModel = (view, ctx, render) ->
+
+  # all these defaults can be overriden in model
   
   defaultHeaderImg = 
     cookery:'peppers'
@@ -31,13 +33,14 @@ bind = (id) ->
   
     view = view[id]
     
+    modelId=id
     # direct to single page?
-    mId=id
     if view.params.id
-        mId="article"
-    
+        modelId="article"
+
+    # todo: replace with file exists..
     try
-      model = require './'+mId
+      model = require './'+modelId
     catch err
       model = defaultModel
 
@@ -52,7 +55,8 @@ bind = (id) ->
 
     model view,ctx, -> 
       modelView = []
-      modelView[mId] = view
+      modelView[modelId] = view
+
       render modelView
     
 module.exports.build = (s, v, c) ->

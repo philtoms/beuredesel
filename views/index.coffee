@@ -9,7 +9,13 @@
 section id:'articles', class:'l-mytitle', ->
   for x in @data.articles[0..10]
     article id:x.key.replace(/\//g,'-'), ->
-      x.article
+      text x.article
+      if x.comments
+        a href:x.key.split('page/')[1], -> 
+          text x.comments.length
+          text ' comment'
+          if x.comments.length > 1
+            text 's'
 
 aside id:'piclinks', ->
   header -> h2 -> "Favourites"

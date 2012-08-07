@@ -1,7 +1,8 @@
-@title = 'Cookery - Beure de sel'
+@title = 'Cookery - Beurre de sel'
 @description = 'Cookery musings and a whole lot of recepies'
 @stylesheets = [
   {inline:"
+    #cmdbar {display:inline;}
     .l-header {background-image:url(../images/header/#{@data.headerImg}.jpg);}
   "}
 ]
@@ -10,9 +11,8 @@ section id:'articles', ->
     @data.article
 
 section id:'commentry', ->
-  h2 -> "Comments"
   div id:'cmdbar', -> 
-    a href:'#add', -> "Add a Comment"
+    a href:'#add', -> "Comment on this article"
   div id:'comments', ->
     if @data.comments
       for x in @data.comments

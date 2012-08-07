@@ -34,6 +34,50 @@ Existing Git Repo?
 vagrant vagrant
 sudo su
 supervisor -w . -e coffee -n exit -q test.js
+[visudo to add user]
 
 node ... &
 kill $!
+
+shhVM - CentOS 5
+Main IP: 108.174.63.119
+ServerName: pts1
+
+#SolusVM allows you to administrate your virtual server. From the panel you can reboot, reload OS, change root password, etc.
+  http://manage.sshVM.com:5353
+  Username: sshVMoffer1315
+
+#vi
+save ctrl c ZZ
+quit ctrl c :quit!
+
+#owner
+chown [-R] dev path
+
+#install 
+ http://www.cyberciti.biz/tips/rhel-fedora-centos-vsftpd-installation.html
+  yum install vsftpd
+  vi /etc/vsftpd/vsftpd.conf
+  #Turn on vsftpd on boot:
+    chkconfig vsftpd on
+  service vsftpd start
+  
+ https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
+  wget http://nodejs.tchol.org/repocfg/el/nodejs-stable-release.noarch.rpm
+  yum localinstall --nogpgcheck nodejs-stable-release.noarch.rpm
+  yum install nodejs-compat-symlinks npm
+  rm nodejs-stable-release.noarch.rpm
+  
+ http://stackoverflow.com/questions/3779274/how-can-git-be-installed-on-centos-5-5
+  rpm -Uvh http://repo.webtatic.com/yum/centos/5/latest.rpm
+  yum install --enablerepo=webtatic git-all
+  
+  npm install -g forever
+ #npm install #package 
+ #temporary workaround to express version 3
+  ftp copy node_modules
+
+#nginx install
+ rpm -Uvh http://download3.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
+ yum --enablerepo=epel install nginx
+ vi /etc/nginx/nginx.conf

@@ -10,7 +10,7 @@ section id:'articles', ->
     article id:x.key.replace(/\//g,'-'), ->
       text x.article
       if x.comments
-        a href:'', -> 
+        a href:x.key.split('page/')[1], -> 
           text x.comments.length
           text ' comment'
           if x.comments.length > 1

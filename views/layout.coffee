@@ -5,10 +5,11 @@ html lang:'en', ->
     meta name:'description', content:@description
     meta name:'keywords', content:@keywords
     #meta name:'viewport', content:'user-scalable=no'
-    meta name:'google-site-verification', content:'XP3TLQI7dFpP_gMFBgpGcs0Xamm4ETkYNURfh7OPHwg'
+    #meta name:'google-site-verification', content:'XP3TLQI7dFpP_gMFBgpGcs0Xamm4ETkYNURfh7OPHwg'
     title @title if @title
     script src:'/scripts/head.js'
-    script "googleId='#{@appData.google}'; issueNo=#{@appData.issueNo};"
+    #script "googleId='#{@appData.google}'; issueNo=#{@appData.issueNo};"
+    script "issueNo=#{@appData.issueNo};"
     script @pagescript()
     if @scripts
       for s in @scripts
@@ -25,7 +26,6 @@ html lang:'en', ->
     link rel: 'stylesheet', href: 'http://fonts.googleapis.com/css?family=Amatic+SC' 
     link rel: 'stylesheet', href: 'http://fonts.googleapis.com/css?family=Averia+Libre'
     link rel: 'stylesheet', href: '/style/basestyle.css'
-#    link rel: 'stylesheet', href: '/scripts/uploadify/uploadify.css'
     if @stylesheets
       for s in @stylesheets
         if typeof s is 'object'

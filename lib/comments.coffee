@@ -5,10 +5,9 @@
     '''
       head.ready(document,function(){
         head.js(
-        '/googlea.js'
-        ,'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
+        'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
         ,function(){
-          $('#cmdbar').show().click(function(e){
+          $('#cmdbar').click(function(e){
               if ((e.target.href ||"").split('#')[1]=="add"){
                 head.js(
                  '/socket.io/socket.io.js'
@@ -47,33 +46,6 @@
 
       @connect()
 
-      savedRange=false
-      saveSelection = ->
-        if window.getSelection
-          savedRange = window.getSelection().getRangeAt(0)
-        else if document.selection #ie
-          savedRange = document.selection.createRange()
-
-      restoreSelection = (area) ->
-        if !savedRange 
-          area.focus()
-          saveSelection()
-        area.focus()
-        if savedRange != null
-          if window.getSelection
-            s = window.getSelection()
-            if s.rangeCount > 0 
-                s.removeAllRanges()
-            s.addRange(savedRange)
-          else 
-            if document.createRange
-              window.getSelection().addRange(savedRange);
-            else 
-              if document.selection #ie
-                savedRange.select()
-                
-        savedRange=false
-
       comments = new class
 
         comment=null
@@ -104,14 +76,13 @@
           edit = comment.find(".edit")
           if editable
             edit.attr("contentEditable",true)
-            restoreSelection edit[0]
           else
             edit.removeAttr("contentEditable")
             inEdit=false
-            $('#cmdbar').hide()
+            $('#cmdbar').html("<a href='#add'>Comment on this article</a>")
 
         id = $("#articles article")[0].id
-        $("#commentry").prepend commentTemplate "new"
+        $("#comments").prepend commentTemplate "new"
         comment = $("#new")
         comment.keydown (e) ->
           t=e.target.innerHTML

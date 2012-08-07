@@ -18,7 +18,7 @@ myZappa = (port,db,app) ->
     
     zappa.run port, -> # passes this fn to zappa.run
         
-      @use @express.bodyParser({uploadDir:'./public/uploads'}), @app.router, 'static'
+      @use @express.bodyParser({uploadDir:'./public/uploads'}), @express.cookieParser(), @express.session({secret:'minnie'}), @app.router, 'static'
  
       @store = store
       @appData = appData = data
@@ -27,7 +27,7 @@ myZappa = (port,db,app) ->
       @include './lib/viewsync' 
       @include './lib/comments' 
 
-      defaultModel = require('./models/default').build(store, @viewsync, @comments)
+      buildModel = require('./models/default').build(store, @viewsync, @comments)
       
       @nav = (routes) ->
         for t,i in routes
@@ -38,11 +38,15 @@ myZappa = (port,db,app) ->
 
           r=routes[i]
           do(r) =>
-            model = defaultModel r.name
+            model = buildModel r.name
           
             #use this syntax to get a variable into a key
             routeHandler = {} 
             routeHandler[r.route+':id([0-9]+)?'] = ->
+
+              if r.name=='admin' && !@session.user?.admin
+                console.log r
+                return @next('route')
 
               view = {}
               view[r.name] =
