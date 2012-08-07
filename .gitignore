@@ -2,3 +2,4 @@ node_modules
 test_modules
 public/images/gallery/*
 public/images/blog/*
+public/images/thumbs/*
